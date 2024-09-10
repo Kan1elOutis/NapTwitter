@@ -8,8 +8,14 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 fastapi = "^0.112.0"
-sqlalchemy = "^2.0.31"
+sqlalchemy = {extras = ["asyncio"], version = "^2.0.32"}
 uvicorn = "^0.30.5"
+alembic = "^1.13.2"
+python-dotenv = "^1.0.1"
+asyncpg = "^0.29.0"
+loguru = "^0.7.2"
+psycopg2-binary = "^2.9.9"
+fastapi-cache2 = {extras = ["redis"], version = "^0.2.2"}
 
 
 [build-system]
