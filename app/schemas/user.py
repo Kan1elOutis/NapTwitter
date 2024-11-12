@@ -1,5 +1,5 @@
 from typing import List, Optional
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, EmailStr
 
 from app.schemas.base_response import ResponseSchema
 
@@ -13,8 +13,8 @@ class UserSchema(BaseModel):
     username: str = Field(alias="name")
 
     model_config = ConfigDict(
-        from_attributes=True,  # Автоматическое преобразование данных ORM-модели в объект схемы для сериализации
-        populate_by_name=True,  # Использовать псевдоним вместо названия поля
+        from_attributes=True,
+        populate_by_name=True,
     )
 
 
@@ -26,7 +26,6 @@ class UserDataSchema(UserSchema):
     following: Optional[List["UserSchema"]] = []
     followers: Optional[List["UserSchema"]] = []
 
-    # Автоматическое преобразование данных ORM-модели в объект схемы для сериализации
     model_config = ConfigDict(from_attributes=True)
 
 
@@ -36,3 +35,44 @@ class UserOutSchema(ResponseSchema):
     """
 
     user: UserDataSchema
+
+
+class EmailSchema(BaseModel):
+    """
+    :TODO
+    """
+    email: EmailStr
+    subject: str = "Hello from FastAPI"
+    body: str = "This is a test email sent from a background Celery task."
+
+
+class UserBase(BaseModel):
+    username: str
+    email: str
+    password: str
+    is_active: bool = True
+    is_superuser: bool = False
+    is_verified: bool
+    email_code: str
+
+
+class UserCreate(BaseModel):
+    email: str
+    password: str
+    re_password: str
+
+
+class UserResult(BaseModel):
+    username: str
+    email: str
+    is_active: bool
+    is_superuser: bool
+    is_verified: bool
+
+    class Config:
+        orm_mode = True
+
+
+class UserActivationCreate(BaseModel):
+    email: str
+    activation_code: str

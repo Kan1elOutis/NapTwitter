@@ -12,6 +12,6 @@ class Like(Base):
     __tablename__ = "likes"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, index=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
     tweets_id: Mapped[int] = mapped_column(ForeignKey("tweets.id"))
 
